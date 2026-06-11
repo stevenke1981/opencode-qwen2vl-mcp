@@ -34,12 +34,12 @@ const QWEN_CONFIG = path.join(OPENCODE_DIR, "qwen2vl-mcp.json");
 const NPM_TIMEOUT_MS = 300_000;
 
 function toConfigPath(absPath) {
-  const normalized = absPath.replace(/\\/g, "/");
+  const normalized = path.resolve(absPath).replace(/\\/g, "/");
+  if (process.platform === "win32") {
+    return normalized;
+  }
   if (normalized.startsWith(HOME.replace(/\\/g, "/"))) {
     return `~${normalized.slice(HOME.replace(/\\/g, "/").length)}`;
-  }
-  if (process.platform === "win32" && /^[A-Za-z]:/.test(normalized)) {
-    return `/${normalized[0].toLowerCase()}${normalized.slice(2)}`;
   }
   return normalized;
 }
