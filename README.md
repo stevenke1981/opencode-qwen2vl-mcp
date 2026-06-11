@@ -73,6 +73,18 @@ node scripts/install-global.mjs
 
 MCP command uses `$env:USERPROFILE` on Windows and `$HOME` on Linux/macOS (portable across machines).
 
+### OpenCode loading note
+
+This package is an **MCP server**, not a plugin. It belongs under the `mcp`
+section of `opencode.json(c)`, and the command should start `dist/index.js`
+over stdio. Do not place `src/*.ts` or `mcps/**/*.json` in
+`~/.config/opencode/plugins/`; OpenCode auto-loads files in that directory as
+plugins, and these files are not plugin entrypoints.
+
+If you want fast startup, start `llama-server` manually and set
+`"autoStartServer": false`. With the default `"autoStartServer": true`, the
+first `qwen_*` call can wait while the model downloads and loads.
+
 ### Configure
 
 Edit `~/.config/opencode/qwen2vl-mcp.json`:
@@ -290,6 +302,8 @@ Do not skip capture: qwen* needs a local `image_path`; it does not screenshot by
 4. Do not use bash/curl/PowerShell to call llama-server when qwen* tools exist
 5. Report image path + model answer to the user
 6. Pair with [opencode-vision-tools](https://github.com/stevenke1981/opencode-vision-tools) for full desktop vision pipeline
+7. Expect first use to be slow when `autoStartServer` is enabled; use `qwen_server_status` to probe without starting
+8. Never register MCP source files or tool-schema JSON as OpenCode plugins
 
 <!-- END_AGENT_README -->
 
