@@ -11,7 +11,7 @@ const config = loadConfig();
 
 const server = new McpServer({
   name: "opencode-qwen2vl-mcp",
-  version: "1.0.3",
+  version: "1.0.4",
 });
 
 function textResult(text: string) {

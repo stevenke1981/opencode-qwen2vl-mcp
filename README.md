@@ -145,7 +145,7 @@ If you prefer to manage the server yourself:
 
 ```powershell
 cd ~/.config/llama-cpp
-.\llama-server.exe -hf ggml-org/Qwen2-VL-2B-Instruct-GGUF -c 8192 --port 8188 --no-webui
+.\llama-server.exe -hf ggml-org/Qwen2-VL-2B-Instruct-GGUF -c 8192 --port 8188 --no-ui
 ```
 
 Set `"autoStartServer": false` in `qwen2vl-mcp.json`.
@@ -179,6 +179,7 @@ Set `"autoStartServer": false` in `qwen2vl-mcp.json`.
 | Port in use | Change `port` in config or stop existing `llama-server` |
 | OpenCode cannot connect | Run `npm run doctor`; rerun `node scripts/install-global.mjs` for portable paths |
 | Stale path (`Users\eda\` or `~`) | Rerun installer — uses `pwsh` + `$env:USERPROFILE` on Windows |
+| Chrome for Testing opens automatically | Old `--no-webui` is deprecated; MCP now passes `--no-ui`. Stop existing `llama-server` and retry |
 
 ### License
 

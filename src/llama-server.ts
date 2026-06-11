@@ -83,7 +83,9 @@ function buildServerArgs(config: Qwen2vlConfig): string[] {
     String(config.ctxSize),
     "--parallel",
     "1",
+    "--no-ui",
     "--no-webui",
+    "--no-ui-mcp-proxy",
   ];
   if (config.gpuLayers && config.gpuLayers !== "auto") {
     args.push("-ngl", config.gpuLayers);
@@ -117,6 +119,11 @@ export async function ensureServer(config: Qwen2vlConfig): Promise<ServerStatus>
       cwd: path.dirname(config.llamaServerBin),
       stdio: ["ignore", "pipe", "pipe"],
       windowsHide: true,
+      env: {
+        ...process.env,
+        LLAMA_ARG_UI: "0",
+        LLAMA_ARG_WEBUI: "0",
+      },
     });
     managedProcess.stdout?.on("data", () => {});
     managedProcess.stderr?.on("data", () => {});
