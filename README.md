@@ -68,6 +68,8 @@ node scripts/install-global.mjs
 |------|---------|
 | `~/.config/opencode-qwen2vl-mcp/` | MCP server source + `dist/` |
 | `~/.config/opencode/qwen2vl-mcp.json` | llama-server / model settings |
+
+MCP command uses `$env:USERPROFILE` on Windows and `$HOME` on Linux/macOS (portable across machines).
 | `~/.config/opencode/opencode.jsonc` | MCP registration |
 
 ### Configure

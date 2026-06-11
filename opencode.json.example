@@ -3,12 +3,14 @@
   "mcp": {
     "opencode-qwen2vl-mcp": {
       "type": "local",
-      "command": ["node", "C:/Users/steven/.config/opencode-qwen2vl-mcp/dist/index.js"],
+      "command": [
+        "pwsh",
+        "-NoProfile",
+        "-Command",
+        "node \"$env:USERPROFILE\\.config\\opencode-qwen2vl-mcp\\dist\\index.js\""
+      ],
       "enabled": true,
-      "timeout": 300000,
-      "environment": {
-        "LLAMA_SERVER_BIN": "D:/llama.cpp/build/bin/Release/llama-server.exe"
-      }
+      "timeout": 300000
     }
   }
 }

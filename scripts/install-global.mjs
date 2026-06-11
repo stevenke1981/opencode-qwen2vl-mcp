@@ -3,6 +3,7 @@ import { spawnSync } from "node:child_process";
 import fs from "node:fs/promises";
 import path from "node:path";
 import os from "node:os";
+import { buildPortableMcpCommand, defaultHomeRelative } from "./mcp-command.mjs";
 
 const MCP_NAME = "opencode-qwen2vl-mcp";
 const ROOT = path.resolve(import.meta.dirname, "..");
@@ -33,16 +34,7 @@ const SYNC_ITEMS = [
 const QWEN_CONFIG = path.join(OPENCODE_DIR, "qwen2vl-mcp.json");
 const NPM_TIMEOUT_MS = 300_000;
 
-function toConfigPath(absPath) {
-  const normalized = path.resolve(absPath).replace(/\\/g, "/");
-  if (process.platform === "win32") {
-    return normalized;
-  }
-  if (normalized.startsWith(HOME.replace(/\\/g, "/"))) {
-    return `~${normalized.slice(HOME.replace(/\\/g, "/").length)}`;
-  }
-  return normalized;
-}
+const MCP_REL_PATH = defaultHomeRelative(MCP_NAME, "dist", "index.js");
 
 async function exists(p) {
   try {
@@ -121,48 +113,42 @@ async function ensureQwenConfig(installDir) {
   }
 }
 
-async function registerMcp(entryPath) {
-  const candidates = ["opencode.jsonc", "opencode.json"];
-  let configFile = null;
-  for (const name of candidates) {
-    const p = path.join(OPENCODE_DIR, name);
-    if (await exists(p)) {
-      configFile = p;
-      break;
-    }
-  }
+async function readJsoncConfig(filePath) {
+  const raw = await fs.readFile(filePath, "utf8");
+  const stripped = raw.replace(/^\s*\/\/.*$/gm, "").replace(/,\s*([}\]])/g, "$1");
+  return JSON.parse(stripped);
+}
 
+async function registerMcp() {
   const mcpEntry = {
     type: "local",
-    command: ["node", entryPath.replace(/\\/g, "/")],
+    command: buildPortableMcpCommand(MCP_REL_PATH, { node: true }),
     enabled: true,
     timeout: 300000,
   };
 
-  if (!configFile) {
-    configFile = path.join(OPENCODE_DIR, "opencode.jsonc");
+  const candidates = ["opencode.jsonc", "opencode.json"];
+  let updated = 0;
+  for (const name of candidates) {
+    const filePath = path.join(OPENCODE_DIR, name);
+    if (!(await exists(filePath))) continue;
+    const config = await readJsoncConfig(filePath);
+    config.mcp = config.mcp ?? {};
+    config.mcp[MCP_NAME] = mcpEntry;
+    await fs.writeFile(filePath, JSON.stringify(config, null, 2) + "\n", "utf8");
+    console.log(`Registered MCP in ${filePath}`);
+    updated++;
+  }
+
+  if (updated === 0) {
+    const filePath = path.join(OPENCODE_DIR, "opencode.jsonc");
     await fs.writeFile(
-      configFile,
+      filePath,
       JSON.stringify({ $schema: "https://opencode.ai/config.json", mcp: { [MCP_NAME]: mcpEntry } }, null, 2) + "\n",
       "utf8",
     );
-    console.log(`Registered MCP in ${configFile}`);
-    return;
+    console.log(`Created ${filePath} with MCP registration`);
   }
-
-  const raw = await fs.readFile(configFile, "utf8");
-  let config;
-  try {
-    const stripped = raw.replace(/^\s*\/\/.*$/gm, "").replace(/,\s*([}\]])/g, "$1");
-    config = JSON.parse(stripped);
-  } catch {
-    throw new Error(`Could not parse ${configFile}. Add the MCP block from opencode.json.example manually.`);
-  }
-
-  config.mcp = config.mcp ?? {};
-  config.mcp[MCP_NAME] = mcpEntry;
-  await fs.writeFile(configFile, JSON.stringify(config, null, 2) + "\n", "utf8");
-  console.log(`Registered MCP in ${configFile}`);
 }
 
 async function main() {
@@ -177,11 +163,11 @@ async function main() {
   }
 
   await ensureQwenConfig(installDir);
-  await registerMcp(toConfigPath(distEntry));
+  await registerMcp();
 
   console.log("\nDone! Restart OpenCode.");
   console.log(`Global project: ${installDir}`);
-  console.log(`MCP entry: ${toConfigPath(distEntry)}`);
+  console.log(`MCP relative: ${MCP_REL_PATH}`);
   console.log("Tools: qwen_doctor, qwen_server_status, qwen_server_stop, qwen_describe_image, qwen_ask_image, qwen_ocr_image");
   console.log(`Config: ${QWEN_CONFIG}`);
 }
