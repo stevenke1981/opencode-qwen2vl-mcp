@@ -53,6 +53,7 @@ function configCandidates(): string[] {
   return [
     process.env.QWEN2VL_MCP_CONFIG,
     path.join(home, ".config", "opencode", "qwen2vl-mcp.json"),
+    path.join(home, ".config", "opencode-qwen2vl-mcp", "config.json"),
     path.join(home, ".config", "qwen2vl-mcp", "config.json"),
   ].filter(Boolean) as string[];
 }

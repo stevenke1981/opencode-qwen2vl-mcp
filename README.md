@@ -40,17 +40,14 @@ Default binary location on this machine:
 
 First run downloads `ggml-org/Qwen2-VL-2B-Instruct-GGUF` from Hugging Face (~1–2 GB) into the HF cache.
 
-### Install
+### Install (global, `~/.config`)
 
-```bash
-git clone https://github.com/stevenke1981/opencode-qwen2vl-mcp.git
-cd opencode-qwen2vl-mcp
-```
+One command clones/updates to `~/.config/opencode-qwen2vl-mcp`, builds there, and registers MCP in `~/.config/opencode/opencode.jsonc`.
 
 **Windows (PowerShell):**
 
 ```powershell
-powershell -ExecutionPolicy Bypass -File .\install.ps1
+powershell -ExecutionPolicy Bypass -File install.ps1
 ```
 
 **macOS / Linux:**
@@ -59,7 +56,19 @@ powershell -ExecutionPolicy Bypass -File .\install.ps1
 bash install.sh
 ```
 
-This builds the project, registers the MCP in `~/.config/opencode/opencode.jsonc`, and creates `~/.config/opencode/qwen2vl-mcp.json`.
+**Manual:**
+
+```bash
+git clone https://github.com/stevenke1981/opencode-qwen2vl-mcp.git ~/.config/opencode-qwen2vl-mcp
+cd ~/.config/opencode-qwen2vl-mcp
+node scripts/install-global.mjs
+```
+
+| Path | Purpose |
+|------|---------|
+| `~/.config/opencode-qwen2vl-mcp/` | MCP server source + `dist/` |
+| `~/.config/opencode/qwen2vl-mcp.json` | llama-server / model settings |
+| `~/.config/opencode/opencode.jsonc` | MCP registration |
 
 ### Configure
 

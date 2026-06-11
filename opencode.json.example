@@ -3,7 +3,7 @@
   "mcp": {
     "opencode-qwen2vl-mcp": {
       "type": "local",
-      "command": ["node", "D:/opencode-qwen2vl-mcp/dist/index.js"],
+      "command": ["node", "~/.config/opencode-qwen2vl-mcp/dist/index.js"],
       "enabled": true,
       "timeout": 300000,
       "environment": {
