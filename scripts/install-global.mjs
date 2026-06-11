@@ -35,6 +35,7 @@ const QWEN_CONFIG = path.join(OPENCODE_DIR, "qwen2vl-mcp.json");
 const NPM_TIMEOUT_MS = 300_000;
 
 const MCP_REL_PATH = defaultHomeRelative(MCP_NAME, "dist", "index.js");
+const skipNpm = process.argv.includes("--skip-npm");
 
 async function exists(p) {
   try {
@@ -93,8 +94,19 @@ function runNpm(args, cwd) {
   if (result.status !== 0) process.exit(result.status ?? 1);
 }
 
+async function needsNpmInstall(installDir) {
+  const nodeModules = path.join(installDir, "node_modules", "@modelcontextprotocol", "sdk");
+  return !(await exists(nodeModules));
+}
+
 async function runBuild(installDir) {
-  runNpm(["install", "--no-fund", "--no-audit"], installDir);
+  if (skipNpm) {
+    console.log("Skipping npm install (--skip-npm).");
+  } else if (await needsNpmInstall(installDir)) {
+    runNpm(["install", "--no-fund", "--no-audit"], installDir);
+  } else {
+    console.log("Dependencies present — skipping npm install.");
+  }
   runNpm(["run", "build"], installDir);
 }
 
@@ -106,10 +118,6 @@ async function ensureQwenConfig(installDir) {
     await fs.copyFile(example, QWEN_CONFIG);
     console.log(`Created config template -> ${QWEN_CONFIG}`);
     console.log("Edit llamaServerBin to your llama-server.exe path.");
-  }
-  if (!(await exists(localConfig)) && (await exists(path.join(installDir, "config.example.json")))) {
-    await fs.copyFile(path.join(installDir, "config.example.json"), localConfig);
-    console.log(`Project config -> ${localConfig}`);
   }
 }
 

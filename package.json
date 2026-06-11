@@ -1,6 +1,6 @@
 {
   "name": "opencode-qwen2vl-mcp",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "repository": {
     "type": "git",
     "url": "https://github.com/stevenke1981/opencode-qwen2vl-mcp.git"
@@ -30,6 +30,7 @@
     "start": "node dist/index.js",
     "dev": "tsx src/index.ts",
     "install:global": "node scripts/install-global.mjs",
+    "doctor": "node scripts/doctor.mjs",
     "verify": "node scripts/verify.mjs"
   },
   "dependencies": {

@@ -69,8 +69,9 @@ node scripts/install-global.mjs
 | `~/.config/opencode-qwen2vl-mcp/` | MCP server source + `dist/` |
 | `~/.config/opencode/qwen2vl-mcp.json` | llama-server / model settings |
 
-MCP command uses `$env:USERPROFILE` on Windows and `$HOME` on Linux/macOS (portable across machines).
 | `~/.config/opencode/opencode.jsonc` | MCP registration |
+
+MCP command uses `$env:USERPROFILE` on Windows and `$HOME` on Linux/macOS (portable across machines).
 
 ### Configure
 
@@ -109,7 +110,14 @@ Ready. Use qwen_describe_image, qwen_ask_image, or qwen_ocr_image.
 Or run locally:
 
 ```bash
+npm run doctor
 npm run verify
+```
+
+Fast reinstall (deps already installed):
+
+```bash
+node scripts/install-global.mjs --skip-npm
 ```
 
 ### MCP tools
@@ -169,6 +177,8 @@ Set `"autoStartServer": false` in `qwen2vl-mcp.json`.
 | First call very slow | Model download + GPU load; wait up to several minutes |
 | MCP timeout | Default 300s in `opencode.jsonc`; increase if needed |
 | Port in use | Change `port` in config or stop existing `llama-server` |
+| OpenCode cannot connect | Run `npm run doctor`; rerun `node scripts/install-global.mjs` for portable paths |
+| Stale path (`Users\eda\` or `~`) | Rerun installer — uses `pwsh` + `$env:USERPROFILE` on Windows |
 
 ### License
 
@@ -296,6 +306,8 @@ opencode-qwen2vl-mcp/
 │   └── image.ts          # Image loading / base64
 ├── scripts/
 │   ├── install-global.mjs
+│   ├── doctor.mjs
+│   ├── mcp-command.mjs
 │   └── verify.mjs
 ├── mcps/opencode-qwen2vl-mcp/tools/   # MCP tool schemas
 ├── config.example.json
