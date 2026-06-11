@@ -1,0 +1,19 @@
+{
+  "name": "qwen_ask_image",
+  "description": "Ask a custom question about a local image using Qwen2-VL-2B via llama.cpp.",
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "image_path": {
+        "type": "string",
+        "description": "Absolute or relative path to a local image file."
+      },
+      "question": {
+        "type": "string",
+        "description": "Question to ask about the image."
+      }
+    },
+    "required": ["image_path", "question"],
+    "additionalProperties": false
+  }
+}

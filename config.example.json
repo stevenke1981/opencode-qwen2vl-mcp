@@ -1,0 +1,13 @@
+{
+  "llamaServerBin": "C:/Users/steven/.config/llama-cpp/llama-server.exe",
+  "llamaMtmdCliBin": "C:/Users/steven/.config/llama-cpp/llama-mtmd-cli.exe",
+  "hfRepo": "ggml-org/Qwen2-VL-2B-Instruct-GGUF",
+  "host": "127.0.0.1",
+  "port": 8188,
+  "ctxSize": 8192,
+  "gpuLayers": "auto",
+  "autoStartServer": true,
+  "serverStartupTimeoutMs": 300000,
+  "requestTimeoutMs": 120000,
+  "maxTokens": 1024
+}

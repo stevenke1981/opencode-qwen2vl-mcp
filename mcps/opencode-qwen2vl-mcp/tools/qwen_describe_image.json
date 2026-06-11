@@ -1,0 +1,15 @@
+{
+  "name": "qwen_describe_image",
+  "description": "Describe a local image using Qwen2-VL-2B via llama.cpp. Use after opencode-vision-tools screenshots to understand UI state.",
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "image_path": {
+        "type": "string",
+        "description": "Absolute or relative path to a local image file (png, jpg, webp, gif, bmp)."
+      }
+    },
+    "required": ["image_path"],
+    "additionalProperties": false
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "name": "qwen_doctor",
+  "description": "Diagnose Qwen2-VL + llama.cpp setup. Run first when vision tools fail. Checks llama-server binary, config, and model load status.",
+  "inputSchema": {
+    "type": "object",
+    "properties": {},
+    "additionalProperties": false
+  }
+}

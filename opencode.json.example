@@ -1,0 +1,14 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "mcp": {
+    "opencode-qwen2vl-mcp": {
+      "type": "local",
+      "command": ["node", "D:/opencode-qwen2vl-mcp/dist/index.js"],
+      "enabled": true,
+      "timeout": 300000,
+      "environment": {
+        "LLAMA_SERVER_BIN": "D:/llama.cpp/build/bin/Release/llama-server.exe"
+      }
+    }
+  }
+}

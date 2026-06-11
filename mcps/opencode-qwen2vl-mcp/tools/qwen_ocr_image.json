@@ -1,0 +1,15 @@
+{
+  "name": "qwen_ocr_image",
+  "description": "Extract visible text from a local image using Qwen2-VL-2B OCR-style prompting via llama.cpp.",
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "image_path": {
+        "type": "string",
+        "description": "Absolute or relative path to a local image file."
+      }
+    },
+    "required": ["image_path"],
+    "additionalProperties": false
+  }
+}

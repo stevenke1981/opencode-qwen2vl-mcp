@@ -1,0 +1,47 @@
+{
+  "name": "opencode-qwen2vl-mcp",
+  "version": "1.0.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/stevenke1981/opencode-qwen2vl-mcp.git"
+  },
+  "description": "MCP server for Qwen2-VL-2B via llama.cpp — local vision for OpenCode",
+  "type": "module",
+  "main": "dist/index.js",
+  "bin": {
+    "opencode-qwen2vl-mcp": "dist/index.js"
+  },
+  "files": [
+    "dist",
+    "scripts",
+    "config.example.json",
+    "opencode.json.example"
+  ],
+  "keywords": [
+    "opencode",
+    "mcp",
+    "qwen2-vl",
+    "llama.cpp",
+    "vision"
+  ],
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "tsx src/index.ts",
+    "install:global": "node scripts/install-global.mjs",
+    "verify": "node scripts/verify.mjs"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.12.1",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.10",
+    "tsx": "^4.19.3",
+    "typescript": "^5.8.2"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
